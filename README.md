@@ -93,3 +93,14 @@ Five states: `running / stopping / orphaned / adopted / done`. Exactly one prima
 - at-least-once：崩溃窗口可能重复终态写入（幂等 finalize 保证恰好一次落盘，但重复尝试可能发生）。
 - 状态读取 = 任何文件系统操作；但**写入**必须遵循原子规则（tmp+rename / O_EXCL），否则破坏收养语义。
 - 规范 v0.1.0：字段可能演进；演进以语义版本化，破坏性变更升大版本。
+
+
+## 形式化定理集（机器可检查证明）
+
+`formal/` 目录包含 ASM-FS 六个组合层性质的机器可检查证明（零第三方依赖的有界模型检查器）：
+
+- 恰一终态 / 收养互斥 / 三证据健全性 / 事件溯源 seq 唯一（含证伪反例）/ 能力格保序嵌入 / 五态优先级唯一标签
+- 完整定理陈述与公理：[`formal/THEOREMS.md`](./formal/THEOREMS.md)
+- 复跑：`node formal/bmc-checker.mjs`（6/6 全绿；E-4 含可重放反例 + 修复版对照）
+- 每条定理带有限域边界声明——有界穷举是组合证明，不是全称证明
+
